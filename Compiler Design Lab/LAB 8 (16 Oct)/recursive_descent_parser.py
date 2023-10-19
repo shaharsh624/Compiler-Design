@@ -13,7 +13,7 @@ print("Grammar used: ")
 print("E - iF")
 print("F - +iF | $")
 
-global string;
+global string
 string = list(input("Enter the string ending with $: "))
 global lookahead
 lookahead = 0

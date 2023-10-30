@@ -1,6 +1,6 @@
 import numpy as np
 def stringcheck():
-    a=list(input("Enter the operator used in the given grammar including the terminals\n non-treminals should be in cursive(small)letter"))
+    a=list(input("Enter the operator used in the given grammar including the terminals\n non-terminals should be in small letters :: "))
     a.append('$')
     print(a)
     l=list("abcdefghijklmnopqrstuvwxyz")
@@ -31,7 +31,7 @@ def stringcheck():
                 break
     print("The Operator Precedence Relational Table\n=============================================")
     print(n)
-    i=list(input("Enter the string want to be checked(non-terminals should be in cursive(small) letter..."))
+    i=list(input("Enter the string want to be checked(non-terminals should be in (small letters) :: "))
     i.append("$")
     s=[None]*len(i)
     q=0
@@ -59,7 +59,7 @@ def stringcheck():
     else:
         return True
 def grammarcheck(i):
-    print("Enter the",str(i+1)+"th grammar(production) want to be checked\n For null production please enter any special symbol or whitespace...")
+    print("Enter the",str(i+1)+"th grammar(production) want to be checked\n For null production please enter any special symbol/whitespace :: ")
     b=list(input().split("->"))
     f=list("abcdefghijklmnopqrstuvwxyz")
     if(b[0]==" " or b[0]=="" or b[0] in f or len(b)==1):
@@ -114,3 +114,16 @@ if(t):
         
 else:
     print("Grammar is not accepted ")
+    
+    
+'''
+LHS: 2
+
+A->a
+A->A+A
+
+a+
+
+a+a
+
+'''

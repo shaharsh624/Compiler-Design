@@ -8,10 +8,13 @@ digit [0-9]
 
 %%
 int|void|if|else|while|switch  {printf("%s is keyword (length: %d)\n", yytext, yyleng); tokenCount++;}
-"[{letter}]"
+
 {letter}({letter}|{digit})* {printf("%s is identifier (length: %d)\n", yytext, yyleng); tokenCount++;}
+
 {digit}({digit})* {printf("%s is number (length: %d)\n", yytext, yyleng); tokenCount++;}
+
 "+"|"/"|"*"|"-"|"%"|"**"|"=" {printf("%s is operator (length: %d)\n", yytext, yyleng); tokenCount++;}
+
 "("|")"|"{"|"}"|";"|":"|"\\"|"|"|","|"["|"]"|"#"|"<"|">"|"." {printf("%s is separator (length: %d)\n", yytext, yyleng); tokenCount++;}
 .|\n {printf("");}
 %%

@@ -6,6 +6,7 @@ F - +iF | !
 global lookahead
 global string
 string = input("Enter the string: ")
+string += "$"
 lookahead = 0
 
 def E():
@@ -24,7 +25,7 @@ def F():
         F()
     else:
         return
-           
+
 def match(c):
     global string
     global lookahead

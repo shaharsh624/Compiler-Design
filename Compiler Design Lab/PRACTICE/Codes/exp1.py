@@ -13,7 +13,7 @@ def classify_token(tok_type, tok_string):
         print(f"Other: {tok_string}")
 
 # Open the input file
-file_path = "python.txt"  # Change this to the path of your input file
+file_path = "PRACTICE\Codes\python.txt"  # Change this to the path of your input file
 with open(file_path, 'rb') as file:
     tokens = tokenize.tokenize(file.readline)
 

@@ -1,56 +1,129 @@
-# Define the operator precedence table
-operators = ['+', '-', '*', '/', '(', ')', 'i', '$']
-prec = [
-    ['>', '>', '<', '<', '<', '>', '>', ''],
-    ['>', '>', '<', '<', '<', '>', '>', ''],
-    ['>', '>', '>', '>', '<', '>', '>', ''],
-    ['>', '>', '>', '>', '<', '>', '>', ''],
-    ['<', '<', '<', '<', '<', '=', '>', ''],
-    ['>', '>', '>', '>', '=', '>', '>', ''],
-    ['<', '<', '<', '<', '<', '<', '=', ''],
-    ['', '', '', '', '', '', '', '']
-]
-
-# Helper function to get the index of an operator
-def getindex(c):
-    if c in operators:
-        return operators.index(c)
-    return -1
-
-# Operator precedence parsing algorithm
-def operator_precedence_parser(input_str):
-    input_str += '$'
-    stack = ['$']
-    i = 0
-    valid = True
-
-    while i < len(input_str) and valid:
-        top = stack[-1]
-        if top == '$' and input_str[i] == '$':
+import numpy as np
+def stringcheck():
+    a=list(input("Enter the operator used in the given grammar including the terminals\n non-terminals should be in small letters :: "))
+    a.append('$')
+    print(a)
+    l=list("abcdefghijklmnopqrstuvwxyz")
+    o=list('(/*%+-)')
+    p=list('(/*%+-)')
+    n=np.empty([len(a)+1,len(a)+1],dtype=str,order="C")
+    for j in range(1,len(a)+1):
+        n[0][j]=a[j-1]
+        n[j][0]=a[j-1]    
+    for i in range(1,len(a)+1):
+        for j in range(1,len(a)+1):
+            if((n[i][0] in l)and(n[0][j] in l)):
+                n[i][j]=""
+            elif((n[i][0] in l)):
+                n[i][j]=">"
+            elif((n[i][0] in o) and (n[0][j] in o)):
+                if(o.index(n[i][0])<=o.index(n[0][j])):
+                   n[i][j]=">"
+                else:
+                    n[i][j]="<"
+            elif((n[i][0] in o)and n[0][j]in l):
+                n[i][j]="<"
+            elif(n[i][0]=="$" and n[0][j]!="$"):
+                n[i][j]="<"
+            elif(n[0][j]=="$" and n[i][0]!="$" ):
+                 n[i][j]=">"
+            else:
+                break
+    print("The Operator Precedence Relational Table\n=============================================")
+    print(n)
+    i=list(input("Enter the string want to be checked(non-terminals should be in (small letters) :: "))
+    i.append("$")
+    s=[None]*len(i)
+    q=0
+    s.insert(q,"$")
+    x=[row[0] for row in n]
+    y=list(n[0])
+    h=0
+    while(s[0]!=s[1]):
+        if((i[len(i)-2] in p)):
             break
-        prec_val = prec[getindex(top)][getindex(input_str[i])]
-
-        if prec_val == '<' or prec_val == '=':
-            stack.append(input_str[i])
-            i += 1
-        elif prec_val == '>':
-            popped = stack.pop()
-            while not (prec[getindex(stack[-1])][getindex(popped)] == '<'):
-                popped = stack.pop()
+        elif((s[q] in x)and(i[h]in y )):
+            if(n[x.index(s[q])][y.index(i[h])]=="<"):
+                q+=1
+                s.insert(q,i[h])
+                h+=1
+            elif(n[x.index(s[q])][y.index(i[h])]==">"):
+                s.pop(q)
+                q-=1
+            elif((n[x.index(s[q])][y.index(i[h])]=='')and ((s[q]=="$") and (i[h]=="$"))):
+                s[1]=s[0]
         else:
-            valid = False
-
-    return valid
-
-# Main function to check the validity of a string
-def main():
-    input_str = input("Enter the string: ")
-    is_valid = operator_precedence_parser(input_str)
-    
-    if is_valid:
-        print("String is valid.")
+            break
+    if(s[0]!=s[1]):
+        return False
     else:
-        print("String is not valid.")
+        return True
+def grammarcheck(i):
+    print("Enter the",str(i+1)+"th grammar(production) want to be checked\n For null production please enter any special symbol/whitespace :: ")
+    b=list(input().split("->"))
+    f=list("abcdefghijklmnopqrstuvwxyz")
+    if(b[0]==" " or b[0]=="" or b[0] in f or len(b)==1):
+        return False
+    else:
+        b.pop(0)
+        b=list(b[0])
+        s=list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        o=list("(abcdefghijklmnopqrstuvwxyz^/*+-|)")
+        sp=['!','@','#','$','?','~','`',',',';',':','"','=','_','&',"'",""," "]
+        for i in range(0,len(b),2):
+            if(b[i]==" "):
+                g=False
+            elif(b[i] in sp):
+                g=False
+                break
+            elif(b[len(b)-1] in o and ((b[0]=="(" and b[len(b)-1]==")" )or (b.count("(")==b.count(")")))):
+                g=True
+            elif(b[i] in f):
+                g=True
+            elif(b[len(b)-1] in o):
+                g=False
+            elif((i==len(b)-1) and (b[i] in s)):
+                g=True
+            elif((i==len(b)-1) and (b[i] not in s) and (b[i] in o)and b[i-1] in o):
+                g=True
+            elif((b[i] in s) and(b[i+1]in o)):
+                g=True
+            elif((b[i] in s) and (b[i+1] in s)):
+                g=False
+                break
+            else:
+                g=False
+                break
+        if(g==True):
+            return True
+        else:
+            return False
+c=int(input("Enter the number of LHS variables..\n"))
+for i in range(c):
+    if(grammarcheck(i)):
+        t=True
+    else:
+        t=False
+        break
+if(t):
+    print("Grammar is accepted")
+    if(stringcheck()):
+        print("String is accepted")
+    else:
+        print("String is not accepted")
+        
+else:
+    print("Grammar is not accepted ")
+    
+    
+'''
+LHS: 2
 
-if __name__ == "__main__":
-    main()
+A->a
+A->A+A
+
+a+
+
+a+a
+
+'''

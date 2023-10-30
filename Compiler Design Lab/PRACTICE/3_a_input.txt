@@ -4,5 +4,12 @@ int count=0;
 /*multi
 line
 comment*/
+/*multi
+line
+comment*/
+// single line comment
+/*multi
+line
+comment*/
 // single line comment
 int guys = 9;

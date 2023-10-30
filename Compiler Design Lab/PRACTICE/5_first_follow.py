@@ -40,7 +40,7 @@ def calculate_first_recursive(grammar, symbol, first_sets, terminals):
                     )
                     prev_symbol = sub_symbol
 
-
+ 
 # Example grammar
 grammar = {
     "S": ["aB", "bA", "c"],

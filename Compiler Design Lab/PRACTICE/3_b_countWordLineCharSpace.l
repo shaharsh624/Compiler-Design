@@ -14,7 +14,7 @@ int count_space=0;
 
 int main()
 {
-    yyin = fopen("3_c_input.txt", "r");
+    yyin = fopen("3_b_input.txt", "r");
     yylex();
     printf("Number of words: %d\n", count_word);
     printf("Number of line: %d\n", count_line);

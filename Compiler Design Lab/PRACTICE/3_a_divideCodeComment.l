@@ -1,30 +1,26 @@
 %{
-    #include<stdio.h>
-    #include<string.h>
-    int count = 0;
-    FILE *comment;
-    FILE *code;
-    int multiComment = 0;
-    int singleComment = 0;
+#include<stdio.h>
+int singleLineComment = 0;
+int multiLineComment = 0;
+FILE *f1;
+FILE *f2;
 %}
 
 %%
-"/*"[a-zA-Z0-9 \t\n]+"*/" {fprintf(comment, "%s\n", yytext); multiComment++;}
-"//"[a-zA-Z0-9 \t]+"\n" {fprintf(comment, "%s\n", yytext); singleComment++;}
-.|\n {fprintf(code, "%s", yytext);}
+"//"[a-zA-Z0-9 \t]+"\n" {fprintf(f1, "%s\n", yytext); singleLineComment++;}
+"/*"[a-zA-Z0-9 \t\n]"*/" {fprintf(f1, "%s\n", yytext); multiLineComment++;}
+.|\n {fprintf(f2, "%s\n", yytext);}
 %%
 
-int main()
-{
+int main(){
     yyin = fopen("3_a_input.txt", "r");
     comment=fopen("3_a_comment.txt", "w");
     code=fopen("3_a_code.txt", "w");
     yylex();
-    printf("Multiline Comments: %d", multiComment);
-    printf("\nSingle Line Comments: %d", singleComment);
     fclose(yyin);
-}
+    fclose(comment);
+    fclose(code);
 
-int yywrap() {
-    return 1;
+    printf("Multi line Comments: %d", multiLineComment);
+    printf("Single line Comments: %d", singleLineComment);
 }

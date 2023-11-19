@@ -40,18 +40,19 @@ def calculate_first_recursive(grammar, symbol, first_sets, terminals):
                     )
                     prev_symbol = sub_symbol
 
- 
+
 # Example grammar
 grammar = {
-    "S": ["aB", "bA", "c"],
-    "A": ["Bd", "e"],
-    "B": ["f", "ε"],
+    "E": ["TK"],
+    "K": ["+TK", "ε"],
+    "T": ["FL"],
+    "L": ["*FL", "ε"],
+    "F": ["i", "(E)"],
 }
 
-start_symbol = "S"
+terminals = {"+", "*", "(", ")", "i"}
+non_terminals = {"E", "K", "T", "L", "F"}
 epsilon = "ε"
-terminals = {"a", "b", "c", "d", "e", "f"}
-non_terminals = {"S", "A", "B"}
 
 # Calculate FIRST sets
 first_sets = calculate_first(grammar, non_terminals, terminals)

@@ -1,32 +1,18 @@
+%option noyywrap
 %{
     #include<stdio.h>
-    int tokenCount = 0;
 %}
 
-letter [A-Za-z_]
-digit [0-9]
-
 %%
-int|void|if|else|while|switch  {printf("%s is keyword (length: %d)\n", yytext, yyleng); tokenCount++;}
-
-{letter}({letter}|{digit})* {printf("%s is identifier (length: %d)\n", yytext, yyleng); tokenCount++;}
-
-{digit}({digit})* {printf("%s is number (length: %d)\n", yytext, yyleng); tokenCount++;}
-
-"+"|"/"|"*"|"-"|"%"|"**"|"=" {printf("%s is operator (length: %d)\n", yytext, yyleng); tokenCount++;}
-
-"("|")"|"{"|"}"|";"|":"|"\\"|"|"|","|"["|"]"|"#"|"<"|">"|"." {printf("%s is separator (length: %d)\n", yytext, yyleng); tokenCount++;}
+[a-zA-Z]+ {printf("\n\nToken: %s\nLength %d", yytext, yyleng);}
+[0-9]+ {printf("\n\nToken: %s\nLength %d", yytext, yyleng);}
 .|\n {printf("");}
 %%
 
-void main()
+int main()
 {
-    yyin = fopen("2_a_input.txt","r");
+    yyin = fopen("2_a_input.c", "r");
     yylex();
-    printf("Total tokens: %d\n", tokenCount);
-}
-
-int yywrap()
-{
-    return 1;
+    fclose(yyin);
+    return 0;
 }

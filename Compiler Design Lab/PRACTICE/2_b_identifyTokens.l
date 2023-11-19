@@ -1,21 +1,22 @@
-/* Lex program to recognise keywords, numbers, words in a given statement */
-
+%option noyywrap
 %{
-#include<stdio.h>
+    #include<stdio.h>
 %}
 
+/* "printf("|"scanf("[.]+")" {printf("\nFormal String: %s", yytext);} */
+
 %%
-if|else|printf|break|char|continue|float|int|long|while {printf("%s is a keyword\n", yytext);}
-[0-9]+ {printf("%s is a number\n", yytext);}
-[a-zA-Z]+ {printf("%s is a word\n", yytext);}
+if|else|return|int|float|for|while {printf("\nKeyword: %s", yytext);}
+[a-zA-Z][a-zA-Z0-9]* {printf("\nIdentifier: %s", yytext);}
+[0-9]+ {printf("\nNumber: %s", yytext);}
+"+"|"*"|"-"|"/"|"^" {printf("\nOperator: %s", yytext);}
+","|";" {printf("\nSeperator: %s", yytext);}
 .|\n {printf("");}
 %%
 
-int main() {
-    printf("Enter some statement: \n");
+int main(){
+    yyin = fopen("2_a_input.c", "r");
     yylex();
-}
-
-int yywrap() {
-    return 1;
+    fclose(yyin);
+    return 0;
 }

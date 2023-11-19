@@ -1,56 +1,40 @@
 '''
-E –> E + T | T 
-T –> T * F | F 
-F –> ( E ) | id
+E - iF
+F - +iF | !
 '''
-# Because the grammar has left recursion, it can't be parsed by recursive Descent Parser
 
 global lookahead
 global string
+string = input("Enter the string: ")
+string += "$"
 lookahead = 0
-string = input("Enter string to parse: ")
 
 def E():
-    E()
-    if (string[lookahead] == '+'):
+    if (string[lookahead] == 'i'):
         print('E')
-        print('E', end='->')
-        match('+')
-        T()
-    else:
-        T()
-        
-def T():
-    T()
-    if (string[lookahead] == '*'):
-        print('T')
-        print('T', end='->')
-        match('*')
-        F()
-    else :
+        print('E', end="->")
+        match('i')
         F()
 
 def F():
-    if (string[lookahead] == '('):
+    if (string[lookahead] == '+'):
         print('F')
-        print('F', end='->')
-        match('(')
-        E()
-        match(')')
-    elif (string[lookahead] == 'i'):
+        print('F', end="->")
+        match('+')
         match('i')
+        F()
     else:
         return
-
+2
 def match(c):
-    global lookahead
     global string
+    global lookahead
     if (string[lookahead] == c):
-        print(c, end='->')
+        print(c, end="")
         lookahead += 1
     else:
         print("ERROR")
-
+    
 if __name__ == "__main__":
     E()
     if (string[lookahead] == '$'):

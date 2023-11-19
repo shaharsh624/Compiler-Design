@@ -117,3 +117,9 @@ Thumbs.db
 !.gitignore
 !.nvmrc
 !.phpcs.xml.dist
+
+
+*.exe
+*.h
+*.yy.c
+*.tab.c

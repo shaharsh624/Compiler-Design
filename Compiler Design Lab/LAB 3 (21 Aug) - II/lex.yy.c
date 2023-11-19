@@ -626,22 +626,22 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 10 ".\\identifyTokens.l"
-{printf("%s is keyword (length: %d)\n", yytext, yyleng); tokenCount++;}
+{printf("%s : keyword (length: %d)\n", yytext, yyleng); tokenCount++;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 11 ".\\identifyTokens.l"
-{printf("%s is identifier (length: %d)\n", yytext, yyleng); tokenCount++;}
+{printf("%s : identifier (length: %d)\n", yytext, yyleng); tokenCount++;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 12 ".\\identifyTokens.l"
-{printf("%s is operator (length: %d)\n", yytext, yyleng); tokenCount++;}
+{printf("%s : operator (length: %d)\n", yytext, yyleng); tokenCount++;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 13 ".\\identifyTokens.l"
-{printf("%s is separator (length: %d)\n", yytext, yyleng); tokenCount++;}
+{printf("%s : separator (length: %d)\n", yytext, yyleng); tokenCount++;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP

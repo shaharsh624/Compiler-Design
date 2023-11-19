@@ -7,10 +7,10 @@ letter [A-Za-z_]
 digit [0-9]
 
 %%
-int|void|if|else|while|switch  {printf("%s is keyword (length: %d)\n", yytext, yyleng); tokenCount++;}
-{letter}({letter}|{digit})*    {printf("%s is identifier (length: %d)\n", yytext, yyleng); tokenCount++;}
-"+"|"/"|"*"|"-"|"%"|"**"       {printf("%s is operator (length: %d)\n", yytext, yyleng); tokenCount++;}
-"("|")"|"{"|"}"|";"|":"|"\\"|"|"|","|"["|"]"   {printf("%s is separator (length: %d)\n", yytext, yyleng); tokenCount++;}
+int|void|if|else|while|switch  {printf("%s : keyword (length: %d)\n", yytext, yyleng); tokenCount++;}
+{letter}({letter}|{digit})*    {printf("%s : identifier (length: %d)\n", yytext, yyleng); tokenCount++;}
+"+"|"/"|"*"|"-"|"%"|"**"       {printf("%s : operator (length: %d)\n", yytext, yyleng); tokenCount++;}
+"("|")"|"{"|"}"|";"|":"|"\\"|"|"|","|"["|"]"   {printf("%s : separator (length: %d)\n", yytext, yyleng); tokenCount++;}
 
 %%
 

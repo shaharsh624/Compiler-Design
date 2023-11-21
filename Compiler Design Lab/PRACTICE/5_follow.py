@@ -1,67 +1,58 @@
-import importlib
+grammar = [
+    ["A", "abBdB"],
+    ["A", "def"],
+    ["B", "@"]
+]
 
-first = importlib.import_module("5_first")
-calculate_first = first.calculate_first
+#Getting Non Terminals
+non_terminals = []
+for i in range(0, len(grammar)):
+    if grammar[i][0] not in non_terminals:
+        non_terminals.append(grammar[i][0])
 
-print(first)
+#Getting Terminals
+terminals = []
+for i in range(0, len(grammar)):
+    for j in range(0, len(grammar[i][1])):
+        if grammar[i][1][j] not in non_terminals:
+            terminals.append(grammar[i][1][j])
 
-# Function to calculate FOLLOW sets
-def calculate_follow(grammar, non_terminals, terminals, first_sets):
-    follow_sets = {NT: set() for NT in non_terminals}
-    follow_sets[grammar[start]].add('$')
+first = {}
+for i in range(0, len(non_terminals)):
+    first.update({non_terminals[i]: []})
 
-    for NT in non_terminals:
-        calculate_follow_rec(grammar, NT, terminals, follow_sets, first_sets, set())
+def findFirst(nonTerm, grammar, terminals, first):
+    for i in range(0, len(grammar)):
+        if(grammar[i][0] == nonTerm):
+            if(grammar[i][1][0] in terminals):
+                if grammar[i][1][0] not in first[grammar[i][0]]:
+                    first[nonTerm].append(grammar[i][1][0])
+            else:
+                findFirst(grammar[i][1][0], grammar, terminals, first)
+                first[nonTerm].extend(first[grammar[i][1][0]])
 
-    print("\nFOLLOW sets:")
-    for symbol, follow_set in follow_sets.items():
-        print(f"FOLLOW({symbol}): {follow_set}")
+for i in range(0, len(non_terminals)):
+    findFirst(non_terminals[i], grammar, terminals, first)
 
-    return follow_sets
+follow = {}
+for i in range(0, len(non_terminals)):
+    follow.update({non_terminals[i]: []})
+follow["A"].extend("$")
 
-def calculate_follow_rec(grammar, symbol, terminals, follow_sets, first_sets, visited):
-    if symbol not in visited:
-        visited.add(symbol)
-        for NT, productions in grammar.items():
-            for production in productions:
-                for i, sub_symbol in enumerate(production):
-                    if sub_symbol == symbol:
-                        if i < len(production) - 1:
-                            follow_sets[symbol].update(calculate_first_set(production[i + 1:], first_sets, terminals))
-                            if epsilon in calculate_first_set(production[i + 1:], first_sets, terminals):
-                                follow_sets[symbol].update(calculate_follow_rec(grammar, NT, terminals, follow_sets, first_sets, visited))
-                        else:
-                            follow_sets[symbol].update(calculate_follow_rec(grammar, NT, terminals, follow_sets, first_sets, visited))
-    
-    return follow_sets[symbol]
+def findFollow(nonTerm, grammar, terminals, non_terminals, first, follow):
+    for i in range(0, len(grammar)):
+        for j in range(0, len(grammar[i][1])):
+            if nonTerm == grammar[i][1][j]:
+                if j + 1 == len(grammar[i][1]):
+                    findFollow(grammar[i][0], grammar, terminals, non_terminals, first, follow)
+                    follow[nonTerm].extend(follow[grammar[i][0]])
+                else:
+                    if grammar[i][1][j + 1] in terminals and grammar [i][1][j + 1] not in follow[nonTerm]:
+                        follow[nonTerm].extend(grammar[i][1][j + 1])
+                    elif grammar[i][1][j + 1] in non_terminals and grammar [i][1][j + 1] not in follow[nonTerm]:
+                        follow[nonTerm].extend(first[grammar[i][1][j + 1]])
 
-def calculate_first_set(symbols, first_sets, terminals):
-    first_set = set()
-    for symbol in symbols:
-        if symbol in terminals:
-            first_set.add(symbol)
-            break
-        else:
-            first_set.update(first_sets[symbol])
-            if epsilon not in first_sets[symbol]:
-                break
-    return first_set
+for i in range(0, len(non_terminals)):
+    findFollow(non_terminals[i], grammar, terminals, non_terminals, first, follow)
 
-# Example grammar
-grammar = {
-    "E": ["TK"],
-    "K": ["+TK", ""],
-    "T": ["FL"],
-    "L": ["*FL", ""],
-    "F": ["i", "(E)"],
-}
-start = "E"
-terminals = {"+", "*", "(", ")", "i"}
-non_terminals = {"E", "K", "T", "L", "F"}
-epsilon = ""
-
-# Calculate FIRST sets
-first_sets = calculate_first(grammar, non_terminals, terminals)
-
-# Calculate FOLLOW sets
-calculate_follow_sets = calculate_follow(grammar, non_terminals, terminals, first_sets)
+print(first, follow)

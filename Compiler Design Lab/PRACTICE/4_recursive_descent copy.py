@@ -25,7 +25,7 @@ def F():
         F()
     else:
         return
-2
+
 def match(c):
     global string
     global lookahead
